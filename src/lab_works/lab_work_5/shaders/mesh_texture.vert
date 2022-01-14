@@ -14,14 +14,14 @@ out vec3 new_normal_matrix;
 out vec3 fragPosition;
 out vec3 lPos;
 
-out vec3 Ptangent;
-out vec3 Ltangent;
+out vec3 tangentPos;
+out vec3 tangentLoc;
 out vec2 VertexTexCoords;
 
 vec3 t;
 vec3 b;
 vec3 n;
-mat3 TBNinverse;
+mat3 inv_TBN;
 
 void main()
 {
@@ -43,9 +43,9 @@ void main()
 	t = normalize ( ModelView * vec4( aVertexTangent, 0.0 ) ).xyz ;
 	b = normalize ( ModelView * vec4( aVertexBitangent, 0.0 ) ).xyz ;
 
-	TBNinverse = transpose ( mat3 ( t, b, n ) ); //inversion de la matrice
+	inv_TBN = transpose ( mat3 ( t, b, n ) ); //inversion de la matrice
 
 	//tangent space
-	Ptangent = TBNinverse * fragPosition;
-	Ltangent = TBNinverse * vec3(0,0,0);
+	tangentPos = inv_TBN * fragPosition;
+	tangentLoc = inv_TBN * vec3(0,0,0);
 }

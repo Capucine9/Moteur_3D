@@ -28,8 +28,8 @@ in vec3 fragPosition;
 in vec3 lPos;
 in vec2 VertexTexCoords;
 
-in vec3 Ptangent;
-in vec3 Ltangent;
+in vec3 tangentPos;
+in vec3 tangentLoc;
 
 
 layout( location = 0 ) out vec4 fragColor;
@@ -80,13 +80,13 @@ void main()
 
 	if(uHasNormalMap){//tangent space
 	
-		vec3  directLight = normalize( Ltangent - Ptangent );
+		vec3  directLight = normalize( tangentLoc - tangentPos );
 		vec3  N			  = texture2D( uNormalMap, VertexTexCoords ).xyz;
 		N = N*2 - 1;
 		float cosinus	  = max( dot( N, -directLight ), 0.f );
 		vec3  diffuse	  = diffuse_color * cosinus;
 
-		float cos	   = pow( dot( N, normalize( -directLight - Ptangent ) ), shininess );
+		float cos	   = pow( dot( N, normalize( -directLight - tangentPos ) ), shininess );
 		vec3  specular = specular_color * cos;
 
 		fragColor = vec4( ( ambient_couleur + diffus_couleur.xyz + speculaire_couleur ), 1.f );
